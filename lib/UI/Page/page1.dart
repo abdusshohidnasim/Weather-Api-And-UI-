@@ -4,33 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:wather_api_and_ui/UI/Wized/page2_top_bar.dart';
+import '../Porovider/geolocator_provider.dart';
 import '../Porovider/theme_mode_provider.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  GetGeolocator() async {
-    LocationPermission parmition = await Geolocator.checkPermission();
-    if (parmition == LocationPermission.denied ||
-        parmition == LocationPermission.deniedForever) {
-      print("Location Dinnied");
-      LocationPermission ask = await Geolocator.requestPermission();
-    } else {
-      Position currentlocation = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      );
-      print("Current Location ${currentlocation.latitude.toString()}");
-      print("Current Location ${currentlocation.longitude.toString()}");
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      Provider.of<Gealocator>(context, listen: false).GetGeolocator();
+    });
+    //LocaleProvider.GetGeolocator();
     print("buil"); // শুধুমাত্র page build হলে print হবে
     return Scaffold(
       body: Padding(
@@ -49,9 +34,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-          ElevatedButton(onPressed: (){
-            GetGeolocator();
-          }, child: Text("currten location ")),
+            Consumer<Gealocator>(
+              builder: (context, LocaleProvider, child) {
+                return Column(
+                  children: [
+                    SizedBox(height: 30),
+                    Text(
+                      "${LocaleProvider.Address}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+
+                    Image(image: AssetImage("assets/images/rain2.jpeg")),
+                  ],
+                );
+              },
+            ),
 
             const SizedBox(height: 20),
           ],
