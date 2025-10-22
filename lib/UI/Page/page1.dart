@@ -2,17 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wather_api_and_ui/UI/Wized/page2_top_bar.dart';
+import '../Porovider/datetime_provider.dart';
 import '../Porovider/geolocator_provider.dart';
 import '../Porovider/theme_mode_provider.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
+  void time() {}
+
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
+      Provider.of<DatetimeProvider>(context, listen: false).Date();
+
       Provider.of<Gealocator>(context, listen: false).GetGeolocator();
     });
     //LocaleProvider.GetGeolocator();
@@ -46,12 +52,20 @@ class MyHomePage extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ),
-
-                    Image(image: AssetImage("assets/images/rain2.jpeg")),
                   ],
                 );
               },
             ),
+            Consumer<DatetimeProvider>(
+              builder: (context, LocalDatTime, child) {
+                return Text(
+                  "${LocalDatTime.ToDayDate} ${LocalDatTime.FormateDate}",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                );
+              },
+            ),
+            Image(image: AssetImage("assets/images/rain2.jpeg")),
+            Row(children: []),
 
             const SizedBox(height: 20),
           ],

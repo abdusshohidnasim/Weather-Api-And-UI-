@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'UI/Page/page1.dart';
+import 'UI/Porovider/datetime_provider.dart';
 import 'UI/Porovider/geolocator_provider.dart';
 import 'UI/Porovider/theme_mode_provider.dart';
 
@@ -10,6 +11,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => Theme1()),
         ChangeNotifierProvider(create: (_) => Gealocator()),
+        ChangeNotifierProvider(create: (_) => DatetimeProvider()),
       ],
       child: const MyApp(),
     ),
